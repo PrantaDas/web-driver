@@ -4,17 +4,17 @@ const { exec, spawn } = require('child_process');
 (async () => {
     try {
 
-        const child = exec("powershell", ["(Get-Item (Get-ItemProperty 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\chrome.exe').'(Default)').VersionInfo"])
-        child.stdout.on('data', function (data) {
+        const res = exec("powershell", ["(Get-Item (Get-ItemProperty 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\chrome.exe').'(Default)').VersionInfo"])
+        res.stdout.on('data', function (data) {
             console.log(data);
         });
-        child.stderr.on('data', function (data) {
+        res.stderr.on('data', function (data) {
             console.log(data);
         });
-        child.on('exit', function () {
-            console.log("Powershell Script Finished");
+        res.on('exit', function () {
+            console.log("Execution Done!");
         });
-        child.stdin.end();
+        res.stdin.end();
     }
     catch (e) { console.log(e) }
 })();
