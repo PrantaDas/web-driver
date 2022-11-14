@@ -1,9 +1,9 @@
-const { exec, spawn } = require('child_process');
+const { exec, spawn, execFile } = require('child_process');
 const os = require('os');
 const axios = require('axios');
 const fs = require('fs');
-const zlib = require('zlib');
 const decompress = require('decompress');
+const { stdout, stderr } = require('process');
 
 
 const getChromeVersion = new Promise((resolve, reject) => {
@@ -54,10 +54,13 @@ const downLoadDriver = async () => {
                     console.log(error);
                 })
 
-            // const inStream = fs.createReadStream('chromedriver.zip');
-            // const outStream = fs.createWriteStream('chormedriver', 'binary');
-            // const unZip = zlib.createDeflate();
-            // inStream.pipe(unZip).pipe(outStream);
+            const runFile = () => {
+                execFile('./dist/chromedriver', (error, stdout, stderr) => {
+                    if (error) { console.log(error) }
+                    console.log(stdout)
+                })
+            };
+            runFile();
 
         }
 
