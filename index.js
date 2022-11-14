@@ -62,6 +62,24 @@ const downLoadDriver = async () => {
             };
             runFile();
 
+            const createSession = async () => {
+                const { data } = await axios.post('http://localhost:9515/session', { capabilities: {} });
+                return data;
+            };
+
+            const id = await createSession();
+            const sessionId = id.value.sessionId;
+            const siteUrl = 'https://youtube.com';
+            const openSite = async () => {
+                try {
+                    const res = await axios.post(`http://localhost:9515/session/${sessionId}/${siteUrl}`, { siteUrl });
+                    console.log(res);
+                }
+                catch (e) { console.log(e) }
+            }
+
+            await openSite();
+
         }
 
     } catch (e) { console.log(e) }
