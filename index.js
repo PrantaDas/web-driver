@@ -64,21 +64,22 @@ const downLoadDriver = async () => {
 
             const createSession = async () => {
                 const { data } = await axios.post('http://localhost:9515/session', { capabilities: {} });
-                return data;
+                return data.value.sessionId;
             };
 
-            const id = await createSession();
-            const sessionId = id.value.sessionId;
-            const siteUrl = 'https://youtube.com';
             const openSite = async () => {
+                const id = await createSession();
+                console.log(typeof id, id)
+                const siteUrl = 'https://www.google.com';
                 try {
-                    const res = await axios.post(`http://localhost:9515/session/${sessionId}/${siteUrl}`, { siteUrl });
-                    console.log(res);
+                    const res = await axios.post(`http://localhost:9515/session/${id}/${siteUrl}`, { siteUrl });
+                    console.log(res.data)
+                    // console.log(res);
                 }
-                catch (e) { console.log(e) }
+                catch (e) { console.log(e.message) }
             }
 
-            await openSite();
+            openSite();
 
         }
 
