@@ -110,6 +110,7 @@ const turnFullScreen = async (id) => {
     catch (e) { console.log(e) }
 };
 
+// to take scrennshot
 const takeScreenShot = async (id) => {
     try {
         const { data } = await axios.get(`http://localhost:9515/session/${id}/screenshot`);
@@ -119,6 +120,7 @@ const takeScreenShot = async (id) => {
     catch (e) { console.log(e) }
 };
 
+// delete session
 const closeSession = async (id) => {
     try {
         const { data } = await axios.delete(`http://localhost:9515/session/${id}`)
