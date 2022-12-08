@@ -32,9 +32,9 @@ const downLoadDriver = async (chromeVersion) => {
         // to get the current os 
         const currentPlatform = os.platform();
         const { data } = await axios.get('https://chromedriver.storage.googleapis.com/LATEST_RELEASE');
-        if (chromeVersion === '105' && currentPlatform.includes('linux')) {
+        if (chromeVersion === '108' && currentPlatform.includes('linux')) {
             // donwloading driver
-            const url = 'https://chromedriver.storage.googleapis.com/105.0.5195.52/chromedriver_linux64.zip';
+            const url = 'https://chromedriver.storage.googleapis.com/108.0.5359.71/chromedriver_linux64.zip';
             const { data } = await axios.get(url, { responseType: 'arraybuffer' });
             return data;
         }
@@ -94,7 +94,6 @@ const createSession = async (url) => {
 
 const navigateToUrl = async (id, url) => {
     try {
-        console.log('hit');
         const res = await axios.post(`http://localhost:9515/session/${id}/url`, { url });
         console.log(res.data)
     }
@@ -105,19 +104,28 @@ const navigateToUrl = async (id, url) => {
 const turnFullScreen = async (id) => {
     try {
         const { data } = await axios.post(`http://localhost:9515/session/${id}/window/maximize`);
-        console.log(data.value);
     }
     catch (e) { console.log(e) }
 };
 
-// to take scrennshot
-const takeScreenShot = async (id) => {
+/**
+ * 
+ * @param {String} id Session Id
+ * @param {String} fileName Filename
+ */
+const takeScreenShot = async (id, fileName) => {
     try {
         const { data } = await axios.get(`http://localhost:9515/session/${id}/screenshot`);
         const imgData = data.value;
-        fs.writeFileSync('screenshot.png', imgData, 'base64');
+        fs.writeFileSync(`${fileName}.png`, imgData, 'base64');
     }
     catch (e) { console.log(e) }
+};
+
+
+const getActiveElem = async (id) => {
+    const { data } = await axios.get(`http://localhost:9515/session/${id}/element`);
+    return data.value;
 };
 
 // delete session
@@ -128,4 +136,4 @@ const closeSession = async (id) => {
     catch (e) { console.log(e) }
 };
 
-module.exports = { getChromeVersion, downLoadDriver, saveZipFile, unzipFile, start, createSession, navigateToUrl, turnFullScreen, takeScreenShot, closeSession };
+module.exports = { getChromeVersion, downLoadDriver, saveZipFile, unzipFile, start, createSession, navigateToUrl, turnFullScreen, takeScreenShot, closeSession, getActiveElem };
