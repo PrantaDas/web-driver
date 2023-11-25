@@ -33,7 +33,7 @@ Before using this project, ensure you have the following prerequisites installed
 2. Change to the project directory:
 
     ```bash
-    cd chrome-automation
+    cd web-driver
     ```
 
 3. Install dependencies:
